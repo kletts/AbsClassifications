@@ -32,7 +32,7 @@ The available structures, versions, and download functions are:
 | ANZSRC | Australian and New Zealand Standard Research Classification: Socio-Economic Objectives | Jun 2020    | ANZSRCvSEO  | get_ANZSRC |
 | ASCCEG | Australian Standard Classification of Cultural and Ethnic Groups                       | Dec 2019    |             | get_ASCCEG |
 | SACC   | Standard Australian Classification of Countries                                        | Jun 2016    |             | get_SACC   |
-| ANZDOC | Australian Standard Classification of Drugs of Concern                                 | Jul 2011    |             | get_ANZDOC |
+| ASCDOC | Australian Standard Classification of Drugs of Concern                                 | Jul 2011    |             | get_ASCDOC |
 | CPICC  | Consumer Price Index Commodity Classification: 16th series                             | Jul 2011    | CPICCv16    | get_CPICC  |
 | CPICC  | Consumer Price Index Commodity Classification: 15th series                             | Jul 2011    | CPICCv15    | get_CPICC  |
 | ASCED  | Australian Standard Classification of Education: Field of Education                    | Aug 2001    | ASCEDvField | get_ASCED  |

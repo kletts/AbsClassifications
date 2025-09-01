@@ -38,7 +38,7 @@ tibble::tribble(
                                                                                 "2020-06-30", "ANZSRCvSEO", "get_ANZSRC",
   "ASCCEG", "Australian Standard Classification of Cultural and Ethnic Groups", "2019-12-18", "",           "get_ASCCEG",
   "SACC",   "Standard Australian Classification of Countries",                  "2016-06-27", "",           "get_SACC",
-  "ANZDOC", "Australian Standard Classification of Drugs of Concern",           "2011-07-06", "",           "get_ANZDOC",
+  "ASCDOC", "Australian Standard Classification of Drugs of Concern",           "2011-07-06", "",           "get_ASCDOC",
   "CPICC",  "Consumer Price Index Commodity Classification: 16th series",       "2011-07-04", "CPICCv16",   "get_CPICC",
   "CPICC",  "Consumer Price Index Commodity Classification: 15th series",       "2011-07-04", "CPICCv15",   "get_CPICC",
   "ASCED",  "Australian Standard Classification of Education: Field of Education",
