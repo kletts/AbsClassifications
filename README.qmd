@@ -87,6 +87,17 @@ strc  |>
   as_datatree(type="desc")
 ```
 
+## Flatten hierarchy
+
+A hierarchy can be convert to a parent/child table of nodes using the function `flatten_tree`, use the function in combination with `as_datatree`:
+
+```{r}
+strc  |> 
+  dplyr::distinct(FCB_l1, FCB_l2) |> 
+  as_datatree(type="desc") |> 
+  flatten_tree() 
+```
+
 ## Unlabel
 
 The returned data frame includes labelled vector of hierarchy codes and descriptions. If you would prefer only the codes or the descriptions separately, apply the `unlabel` function to returned data frame. 
@@ -96,7 +107,5 @@ strc  |>
   dplyr::distinct(FCB_l1, FCB_l2) |> 
   unlabel()
 ```
-
-
 
 

@@ -123,6 +123,68 @@ strc  |>
     23      ¦--Short-term accommodation buildings                      
     24      °--Other non-residential buildings not elsewhere classified
 
+## Flatten hierarchy
+
+A hierarchy can be convert to a parent/child table of nodes using the
+function `flatten_tree`, use the function in combination with
+`as_datatree`:
+
+``` r
+strc  |> 
+  dplyr::distinct(FCB_l1, FCB_l2) |> 
+  as_datatree(type="desc") |> 
+  flatten_tree() 
+```
+
+                                  from
+    1                             Root
+    2                             Root
+    3                             Root
+    4                             Root
+    5            Residential Buildings
+    6            Residential Buildings
+    7            Residential Buildings
+    8            Residential Buildings
+    9             Commercial Buildings
+    10            Commercial Buildings
+    11            Commercial Buildings
+    12            Commercial Buildings
+    13            Industrial Buildings
+    14            Industrial Buildings
+    15            Industrial Buildings
+    16            Industrial Buildings
+    17 Other Non-residential Buildings
+    18 Other Non-residential Buildings
+    19 Other Non-residential Buildings
+    20 Other Non-residential Buildings
+    21 Other Non-residential Buildings
+    22 Other Non-residential Buildings
+    23 Other Non-residential Buildings
+                                                             to level
+    1                                     Residential Buildings     2
+    2                                      Commercial Buildings     2
+    3                                      Industrial Buildings     2
+    4                           Other Non-residential Buildings     2
+    5                                                    Houses     3
+    6          Semi-detached, row or terrace houses, townhouses     3
+    7                                                Apartments     3
+    8            Residential buildings not elsewhere classified     3
+    9                      Retail and wholesale trade buildings     3
+    10                                      Transport buildings     3
+    11                                                  Offices     3
+    12            Commercial buildings not elsewhere classified     3
+    13       Factories and other secondary production buildings     3
+    14                                               Warehouses     3
+    15                  Agricultural and aquacultural buildings     3
+    16      Other industrial buildings not elsewhere classified     3
+    17                                      Education buildings     3
+    18                                       Religion buildings     3
+    19                                     Aged care facilities     3
+    20                                         Health buildings     3
+    21                   Entertainment and recreation buildings     3
+    22                       Short-term accommodation buildings     3
+    23 Other non-residential buildings not elsewhere classified     3
+
 ## Unlabel
 
 The returned data frame includes labelled vector of hierarchy codes and

@@ -61,18 +61,19 @@ get_ANZSCO <- function(version=NULL) {
                              str_detect(Code5, "^\\d{5,}$") ~ 5,
                              TRUE ~ NA)) |>
     fill(Code1, Code2, Code3, Code4, .direction = "down")
+  newnames <- paste(src[[version]]$prefix, 1:5, sep="_l")
   data <- data |>
     filter(Level==5) |>
     mutate(
-      !!paste(src[[version]]$prefix, "l1", sep="_") := labelled(Code1,
+      !!newnames[1] := labelled(Code1,
                            with(subset(data, Level==1), setNames(Code1, Code2))),
-      !!paste(src[[version]]$prefix, "l2", sep="_") := labelled(Code2,
+      !!newnames[2] := labelled(Code2,
                            with(subset(data, Level==2), setNames(Code2, Code3))),
-      !!paste(src[[version]]$prefix, "l3", sep="_") := labelled(Code3,
+      !!newnames[3] := labelled(Code3,
                            with(subset(data, Level==3), setNames(Code3, Code4))),
-      !!paste(src[[version]]$prefix, "l4", sep="_") := labelled(Code4,
+      !!newnames[4]  := labelled(Code4,
                            with(subset(data, Level==4), setNames(Code4, Code5))),
-      !!paste(src[[version]]$prefix, "l5", sep="_") := labelled(Code5,
+      !!newnames[5]  := labelled(Code5,
                            setNames(Code5, Occupation)),
       .keep = "none")
   return(data) }

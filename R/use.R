@@ -19,14 +19,14 @@ as_datatree <- function(structure,
   sn <- sn[grep("\\_l\\d{1}$", sn)]
   if (type=="code") {
     tree <- structure |>
-      mutate(pathString = paste("Root", !!!syms(sn), sep="/"),
+      mutate(pathString = paste("Root", !!!syms(sn), sep="//"),
              desc = labelled::to_character(.data[[sn[length(sn)]]])) |>
-      data.tree::as.Node()
+      data.tree::as.Node(pathDelimiter = "//")
   } else {
     tree <- structure |>
       mutate(across(all_of(sn), labelled::to_character),
-             pathString = paste("Root", !!!syms(sn), sep="/")) |>
-      data.tree::as.Node()
+             pathString = paste("Root", !!!syms(sn), sep="//")) |>
+      data.tree::as.Node(pathDelimiter = "//")
   }
   return(tree) }
 
@@ -49,4 +49,31 @@ unlabel <- function(structure) {
                   .fns=remove_labels),
            .before=sn[1])
 }
+
+#' Flatten Tree
+#' @description Converts a data.tree hierarchy object into a parent, child data frame.
+#' @param tree an object of class `data.tree`
+#' @param ... other attributes to output from the tree
+#'
+#' @returns A data.frame with columns:
+#'  - `from` the parent path string
+#'  - `to` the child path string
+#'  - `level` the tree depth of the child, root = 1
+#'  - `parentName` the name of the parent node
+#'  - `name` the name of the child node
+#' @export
+#' @importFrom data.tree Get Set ToDataFrameNetwork
+
+flatten_tree <- function(tree, ...) {
+  stopifnot("Node" %in% class(tree))
+  if (any(tree$Get(\(x) grepl("\\/", x$name)))) {
+    tree$Set(parentName = tree$Get(\(x) x$parent$name))
+    df <- ToDataFrameNetwork(tree, "level", "parentName", "name", ...)
+    df <- within(df, { from = parentName; to = name
+                        parentName = NULL; name = NULL })
+  } else {
+    df <- ToDataFrameNetwork(tree, "level", ...)
+  }
+  return(df) }
+
 
