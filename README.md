@@ -126,64 +126,72 @@ strc  |>
 ## Flatten hierarchy
 
 A hierarchy can be convert to a parent/child table of nodes using the
-function `flatten_tree`, use the function in combination with
+function `flatten_datatree`, use the function in combination with
 `as_datatree`:
 
 ``` r
 strc  |> 
-  dplyr::distinct(FCB_l1, FCB_l2) |> 
-  as_datatree(type="desc") |> 
-  flatten_tree() 
+  as_datatree() |> 
+  flatten_datatree() 
 ```
 
-                                  from
-    1                             Root
-    2                             Root
-    3                             Root
-    4                             Root
-    5            Residential Buildings
-    6            Residential Buildings
-    7            Residential Buildings
-    8            Residential Buildings
-    9             Commercial Buildings
-    10            Commercial Buildings
-    11            Commercial Buildings
-    12            Commercial Buildings
-    13            Industrial Buildings
-    14            Industrial Buildings
-    15            Industrial Buildings
-    16            Industrial Buildings
-    17 Other Non-residential Buildings
-    18 Other Non-residential Buildings
-    19 Other Non-residential Buildings
-    20 Other Non-residential Buildings
-    21 Other Non-residential Buildings
-    22 Other Non-residential Buildings
-    23 Other Non-residential Buildings
-                                                             to level
-    1                                     Residential Buildings     2
-    2                                      Commercial Buildings     2
-    3                                      Industrial Buildings     2
-    4                           Other Non-residential Buildings     2
-    5                                                    Houses     3
-    6          Semi-detached, row or terrace houses, townhouses     3
-    7                                                Apartments     3
-    8            Residential buildings not elsewhere classified     3
-    9                      Retail and wholesale trade buildings     3
-    10                                      Transport buildings     3
-    11                                                  Offices     3
-    12            Commercial buildings not elsewhere classified     3
-    13       Factories and other secondary production buildings     3
-    14                                               Warehouses     3
-    15                  Agricultural and aquacultural buildings     3
-    16      Other industrial buildings not elsewhere classified     3
-    17                                      Education buildings     3
-    18                                       Religion buildings     3
-    19                                     Aged care facilities     3
-    20                                         Health buildings     3
-    21                   Entertainment and recreation buildings     3
-    22                       Short-term accommodation buildings     3
-    23 Other non-residential buildings not elsewhere classified     3
+       from  to level
+    1  Root   1     2
+    2  Root   2     2
+    3  Root   3     2
+    4  Root   4     2
+    5     1  11     3
+    6     1  12     3
+    7     1  13     3
+    8     1  19     3
+    9     2  21     3
+    10    2  22     3
+    11    2  23     3
+    12    2  29     3
+    13    3  31     3
+    14    3  32     3
+    15    3  33     3
+    16    3  39     3
+    17    4  41     3
+    18    4  42     3
+    19    4  43     3
+    20    4  44     3
+    21    4  45     3
+    22    4  46     3
+    23    4  49     3
+    24   11 111     4
+    25   11 112     4
+    26   11 113     4
+    27   11 114     4
+    28   12 121     4
+    29   12 122     4
+    30   13 131     4
+    31   13 132     4
+    32   13 133     4
+    33   13 134     4
+    34   13 139     4
+    35   19 191     4
+    36   21 211     4
+    37   22 221     4
+    38   22 222     4
+    39   22 223     4
+    40   22 224     4
+    41   23 231     4
+    42   29 291     4
+    43   31 311     4
+    44   32 321     4
+    45   33 331     4
+    46   39 391     4
+    47   41 411     4
+    48   42 421     4
+    49   43 431     4
+    50   44 441     4
+    51   44 442     4
+    52   45 451     4
+    53   46 461     4
+    54   46 462     4
+    55   46 463     4
+    56   49 491     4
 
 ## Unlabel
 

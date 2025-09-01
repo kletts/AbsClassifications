@@ -89,13 +89,12 @@ strc  |>
 
 ## Flatten hierarchy
 
-A hierarchy can be convert to a parent/child table of nodes using the function `flatten_tree`, use the function in combination with `as_datatree`:
+A hierarchy can be convert to a parent/child table of nodes using the function `flatten_datatree`, use the function in combination with `as_datatree`:
 
 ```{r}
 strc  |> 
-  dplyr::distinct(FCB_l1, FCB_l2) |> 
-  as_datatree(type="desc") |> 
-  flatten_tree() 
+  as_datatree() |> 
+  flatten_datatree() 
 ```
 
 ## Unlabel
