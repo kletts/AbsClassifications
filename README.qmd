@@ -1,0 +1,102 @@
+---
+title: "AbsClassifications"
+format: gfm
+---
+
+Install package from github as: 
+
+```{r}
+#| eval: false
+devtools::install_github("kletts/AbsClassifications")
+```
+
+# Available classifications
+
+The following package includes functions to import ABS hierarchical data [classification structures](https://www.abs.gov.au/statistics/classifications)
+in a standard format.
+
+The available structures, versions, and download functions are:
+
+```{r}
+#| echo: false
+tibble::tribble(
+  ~Abbrev,  ~Name,                                                              ~ReleaseDate, ~Version, ~Function,
+  "OSCA",   "Occupation Standard Classification for Australia",                 "2024-12-06", "",            "get_OSCA",
+  "ANZSCO", "Australian and New Zealand Standard Classification of Occupation", "2022-11-22", "ANZSCOv2022", "get_ANZSCO",
+  "ANZSCO", "Australian and New Zealand Standard Classification of Occupation", "2021-11-23", "ANZSCOv2021", "get_ANZSCO",
+  "ANZSIC", "Australian and New Zealand Standard Industrial Classification",    "2013-06-26", "",            "get_ANZSIC",
+  "ASCL",   "Australian Standard Classification of Languages",                  "2025-03-25", "",            "get_ASCL",
+  "ASCRG",  "Australian Standard Classification of Religious Groups",           "2024-03-26", "ASCRGv2024",  "get_ASCRG",
+  "ASCRG",  "Australian Standard Classification of Religious Groups",           "2016-07-18", "ASCRGv2016",  "get_ASCRG",
+  "ANZSOC", "Australian and New Zealand Standard Offence Classification",       "2023-11-30", "",            "get_ANZSOC",
+  "SESCA",  "Standard Economic Sector Classifications of Australia",            "2021-12-03", "SISCAv2021",  "get_SESCA",
+  "SESCA",  "Standard Economic Sector Classifications of Australia",            "2008-03-31", "SISCAv2008",  "get_SESCA",
+  "FCB",    "Functional Classification of Buildings",                           "2021-01-21", "",            "get_FCB",
+  "ANZSRC", "Australian and New Zealand Standard Research Classification: Field of Research",
+                                                                                "2020-06-30", "ANZSRCvFoR", "get_ANZSRC",
+  "ANZSRC", "Australian and New Zealand Standard Research Classification: Socio-Economic Objectives",
+                                                                                "2020-06-30", "ANZSRCvSEO", "get_ANZSRC",
+  "ASCCEG", "Australian Standard Classification of Cultural and Ethnic Groups", "2019-12-18", "",           "get_ASCCEG",
+  "SACC",   "Standard Australian Classification of Countries",                  "2016-06-27", "",           "get_SACC",
+  "ANZDOC", "Australian Standard Classification of Drugs of Concern",           "2011-07-06", "",           "get_ANZDOC",
+  "CPICC",  "Consumer Price Index Commodity Classification: 16th series",       "2011-07-04", "CPICCv16",   "get_CPICC",
+  "CPICC",  "Consumer Price Index Commodity Classification: 15th series",       "2011-07-04", "CPICCv15",   "get_CPICC",
+  "ASCED",  "Australian Standard Classification of Education: Field of Education",
+                                                                                "2001-08-22", "ASCEDvField", "get_ASCED",
+  "ASCED",  "Australian Standard Classification of Education: Level of Education",
+                                                                                "2001-08-22", "ASCEDvLevel", "get_ASCED",
+) |> 
+  dplyr::mutate(ReleaseDate = format(as.Date(ReleaseDate), "%b %Y")) |> 
+  knitr::kable(format = "pipe") 
+```
+
+Where multiple versions or substructures are available, specify the version required, when calling the function, for example: 
+
+```{r}
+#| eval: false
+get_ANZSRC("ANZSRCvFoR")
+```
+
+# Example 
+
+```{r}
+#| echo: false
+#| message: false
+devtools::load_all()
+```
+
+Using the Functional Classification of Buildings, once downloaded the result is a labelled vector with a column for each level of the hierarchy, here only the first 2 are shown: 
+
+```{r}
+strc <- get_FCB()
+strc |> 
+  dplyr::distinct(FCB_l1, FCB_l2) 
+```
+
+# Additional methods
+
+The package includes two additional methods for working with ABS Classifications: 
+
+## Convert to `data.tree`
+
+The classification structures are naturally hierarchical, the structures once downloaded can be converted to a data tree object using the `as_datatree` function, here using the code descriptions:  
+
+```{r}
+strc  |> 
+  dplyr::distinct(FCB_l1, FCB_l2) |> 
+  as_datatree(type="desc")
+```
+
+## Unlabel
+
+The returned data frame includes labelled vector of hierarchy codes and descriptions. If you would prefer only the codes or the descriptions separately, apply the `unlabel` function to returned data frame. 
+
+```{r}
+strc  |> 
+  dplyr::distinct(FCB_l1, FCB_l2) |> 
+  unlabel()
+```
+
+
+
+
