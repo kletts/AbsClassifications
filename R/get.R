@@ -97,7 +97,7 @@ get_ANZSIC <- function(...) {
                              str_detect(X4, "^\\d{4}$") ~ 4,
                              TRUE ~ NA)) |>
     fill(X1, X2, X3, X4, .direction = "down")
-  data |>
+  data <- data |>
     filter(Level==4) |>
     mutate(
       ANZSIC_l1=labelled(X1,
