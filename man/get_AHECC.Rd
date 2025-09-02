@@ -6,9 +6,16 @@
 \usage{
 get_AHECC(version = c("AHECCv2017", "AHECCv2022"))
 }
+\arguments{
+\item{version}{character string, one of:
+\itemize{
+\item AHECCv2017, version 2017, finalised January 2021
+\item AHECCv2022, version 2022, finalised January 2022
+}}
+}
 \value{
 A data.frame with the classification hierarchy as labeled vectors
 }
 \description{
-Downloads the Australian Harmonized Export Commodity Classifcation version 2017, finalised January 2021
+Downloads the Australian Harmonized Export Commodity Classifcation
 }

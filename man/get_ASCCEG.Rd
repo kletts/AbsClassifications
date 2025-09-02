@@ -4,7 +4,7 @@
 \alias{get_ASCCEG}
 \title{Get ASCCEG}
 \usage{
-get_ASCCEG(...)
+get_ASCCEG()
 }
 \value{
 A data.frame with the classification hierarchy as labeled vectors

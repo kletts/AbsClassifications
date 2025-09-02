@@ -4,7 +4,7 @@
 \alias{get_OSCA}
 \title{Get OSCA}
 \usage{
-get_OSCA(...)
+get_OSCA()
 }
 \value{
 A data.frame with the classification hierarchy as labeled vectors

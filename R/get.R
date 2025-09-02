@@ -1,10 +1,17 @@
 
+utils::globalVariables(c("Chapter", "Code", "Code1", "Code2", "Code3",
+                         "Code4", "Code5", "Codenm", "Country", "Culture",
+                         "Description", "Drug", "HS Code", "HS5", "HS5D",
+                         "Heading", "Language", "Level", "Occupation",
+                         "Religion", "Subject", "X1", "X12", "X15", "X2",
+                         "X3", "X4", "X5", "X6", "X7", "X8", "X9"))
+
 #' Get OSCA
 #' @description Downloads the Occupation Standard Classification for Australia
 #' @returns A data.frame with the classification hierarchy as labeled vectors
 #' @export
 
-get_OSCA <- function(...) {
+get_OSCA <- function() {
   get_ANZSCO("OSCAv2024")
   }
 
@@ -17,6 +24,9 @@ get_OSCA <- function(...) {
 #' @returns A data.frame with the classification hierarchy as labeled vectors
 #' @export
 #' @importFrom haven labelled
+#' @importFrom rlang :=
+#' @importFrom stats setNames
+#' @importFrom utils download.file
 #' @importFrom dplyr mutate filter case_when
 #' @importFrom stringr str_detect
 #' @importFrom tidyr fill
@@ -83,12 +93,13 @@ get_ANZSCO <- function(version=NULL) {
 #' @returns A data.frame with the classification hierarchy as labeled vectors
 #' @export
 #' @importFrom haven labelled
+#' @importFrom stats setNames
 #' @importFrom dplyr mutate filter case_when
 #' @importFrom stringr str_detect
 #' @importFrom tidyr fill
 #' @importFrom rvest read_html html_table
 
-get_ANZSIC <- function(...) {
+get_ANZSIC <- function() {
   url <- "https://www.abs.gov.au/statistics/classifications/australian-and-new-zealand-standard-industrial-classification-anzsic/2006-revision-2-0/numbering-system-and-titles/division-subdivision-group-and-class-codes-and-titles"
   src <- read_html(url) |> html_table(header=FALSE, na.strings = "")
   data <- src[[1]] |>
@@ -120,6 +131,8 @@ get_ANZSIC <- function(...) {
 #' @returns A data.frame with the classification hierarchy as labeled vectors
 #' @export
 #' @importFrom haven labelled
+#' @importFrom stats setNames
+#' @importFrom utils download.file
 #' @importFrom dplyr mutate filter case_when
 #' @importFrom stringr str_detect
 #' @importFrom tidyr fill
@@ -157,7 +170,7 @@ get_ASCRG <- function(version=NULL) {
   data <- read_xlsx(tempfile,
                     sheet=src[[version]]$sheet,
                     range=src[[version]]$range,
-                    col_names= c("Code1", "Code2", "Code3", "Religon"),
+                    col_names= c("Code1", "Code2", "Code3", "Religion"),
                     col_types = "text")  |>
     mutate(Level = src[[version]]$codestr(Code1, Code2, Code3)) |>
     fill(Code1, Code2, Code3, .direction = "down")
@@ -169,7 +182,7 @@ get_ASCRG <- function(version=NULL) {
       ASCRG_l2 = labelled(Code2,
                           with(subset(data, Level==2), setNames(Code2, Code3))),
       ASCRG_l3 = labelled(Code3,
-                          setNames(Code3, Religon)),
+                          setNames(Code3, Religion)),
       .keep = "none")
   return(data) }
 
@@ -181,6 +194,8 @@ get_ASCRG <- function(version=NULL) {
 #' @returns A data.frame with the classification hierarchy as labeled vectors
 #' @export
 #' @importFrom haven labelled
+#' @importFrom utils download.file
+#' @importFrom stats setNames
 #' @importFrom dplyr mutate filter case_when
 #' @importFrom stringr str_detect
 #' @importFrom tidyr fill
@@ -233,12 +248,14 @@ get_ASCED <- function(version=c("ASCEDvLevel", "ASCEDvField")) {
 #' @returns A data.frame with the classification hierarchy as labeled vectors
 #' @export
 #' @importFrom haven labelled
+#' @importFrom stats setNames
+#' @importFrom utils download.file
 #' @importFrom dplyr mutate filter case_when distinct
 #' @importFrom stringr str_detect
 #' @importFrom tidyr fill
 #' @importFrom readxl read_xlsx read_xls
 
-get_ASCL <- function(...) {
+get_ASCL <- function() {
   url <- "https://www.abs.gov.au/statistics/classifications/australian-standard-classification-languages-ascl/2025/ASCL%20structure.xlsx"
   tempfile <- file.path(tempdir(), "temp.xlsx")
   download.file(url, tempfile, mode = "wb")
@@ -270,12 +287,14 @@ get_ASCL <- function(...) {
 #' @returns A data.frame with the classification hierarchy as labeled vectors
 #' @export
 #' @importFrom haven labelled
+#' @importFrom stats setNames
+#' @importFrom utils download.file
 #' @importFrom dplyr mutate filter case_when distinct
 #' @importFrom stringr str_detect
 #' @importFrom tidyr fill
 #' @importFrom readxl read_xlsx read_xls
 
-get_SACC <- function(...) {
+get_SACC <- function() {
   url <- "https://www.abs.gov.au/statistics/classifications/standard-australian-classification-countries-sacc/2016/sacc_12690do0001_202402.xlsx"
   tempfile <- file.path(tempdir(), "temp.xlsx")
   download.file(url, tempfile, mode = "wb")
@@ -309,6 +328,8 @@ get_SACC <- function(...) {
 #' @returns A data.frame with the classification hierarchy as labeled vectors
 #' @export
 #' @importFrom haven labelled
+#' @importFrom stats setNames
+#' @importFrom utils download.file
 #' @importFrom dplyr mutate filter case_when distinct
 #' @importFrom stringr str_detect
 #' @importFrom tidyr fill drop_na
@@ -342,9 +363,9 @@ get_CPICC <- function(version=NULL) {
                              is.na(Code1nm) & is.na(Code3nm) ~ 2,
                              is.na(Code1nm) & is.na(Code2nm) ~ 3,
                              TRUE ~ NA)) |>
-    mutate(Code1 = if_else(Level==1, Code, NA),
-           Code2 = if_else(Level==2, Code, NA),
-           Code3 = if_else(Level==3, Code, NA)) |>
+    mutate(Code1 = ifelse(Level==1, Code, NA),
+           Code2 = ifelse(Level==2, Code, NA),
+           Code3 = ifelse(Level==3, Code, NA)) |>
     fill(Code1, Code2, .direction="down")
   data <- data |>
     filter(Level==3) |>
@@ -366,6 +387,8 @@ get_CPICC <- function(version=NULL) {
 #' @returns A data.frame with the classification hierarchy as labeled vectors
 #' @export
 #' @importFrom haven labelled
+#' @importFrom stats setNames
+#' @importFrom utils download.file
 #' @importFrom dplyr mutate filter case_when distinct
 #' @importFrom stringr str_detect
 #' @importFrom tidyr fill drop_na
@@ -413,12 +436,14 @@ get_SESCA <- function(version=NULL) {
 #' @returns A data.frame with the classification hierarchy as labeled vectors
 #' @export
 #' @importFrom haven labelled
+#' @importFrom stats setNames
+#' @importFrom utils download.file
 #' @importFrom dplyr mutate filter case_when distinct
 #' @importFrom stringr str_detect
 #' @importFrom tidyr fill
 #' @importFrom readxl read_xlsx read_xls
 
-get_ASCCEG <- function(...) {
+get_ASCCEG <- function() {
   url <- "https://www.abs.gov.au/statistics/classifications/australian-standard-classification-cultural-and-ethnic-groups-ascceg/2019/12490do0001_201912.xls"
   tempfile <- file.path(tempdir(), "temp.xls")
   download.file(url, tempfile, mode = "wb")
@@ -449,12 +474,14 @@ get_ASCCEG <- function(...) {
 #' @returns A data.frame with the classification hierarchy as labeled vectors
 #' @export
 #' @importFrom haven labelled
+#' @importFrom utils download.file
+#' @importFrom stats setNames
 #' @importFrom dplyr mutate filter case_when distinct
 #' @importFrom stringr str_detect
 #' @importFrom tidyr fill
 #' @importFrom readxl read_xlsx read_xls
 
-get_ASCDOC <- function(...) {
+get_ASCDOC <- function() {
   url <- "https://www.abs.gov.au/statistics/classifications/australian-standard-classification-drugs-concern/2011/1248do0001_201611.xls"
   tempfile <- file.path(tempdir(), "temp.xls")
   download.file(url, tempfile, mode = "wb")
@@ -488,6 +515,8 @@ get_ASCDOC <- function(...) {
 #' @returns A data.frame with the classification hierarchy as labeled vectors
 #' @export
 #' @importFrom haven labelled
+#' @importFrom stats setNames
+#' @importFrom utils download.file
 #' @importFrom dplyr mutate filter case_when distinct
 #' @importFrom stringr str_detect
 #' @importFrom tidyr fill drop_na
@@ -533,12 +562,13 @@ get_ANZSRC <- function(version=c("ANZSRCvFoR", "ANZSRCvSEO")) {
 #' @returns A data.frame with the classification hierarchy as labeled vectors
 #' @export
 #' @importFrom haven labelled
+#' @importFrom stats setNames
 #' @importFrom dplyr mutate filter case_when
 #' @importFrom stringr str_detect str_extract
 #' @importFrom tidyr fill separate
 #' @importFrom rvest read_html html_table
 
-get_FCB <- function(...) {
+get_FCB <- function() {
   url <- "https://www.abs.gov.au/statistics/classifications/functional-classification-buildings/jan-2021#the-classification-structure"
   src <- rvest::read_html(url) |>
     rvest::html_table(header=FALSE,
@@ -566,12 +596,14 @@ get_FCB <- function(...) {
 #' @returns A data.frame with the classification hierarchy as labeled vectors
 #' @export
 #' @importFrom haven labelled
+#' @importFrom stats setNames
+#' @importFrom utils download.file
 #' @importFrom dplyr mutate filter case_when coalesce
 #' @importFrom stringr str_detect str_split
 #' @importFrom tidyr fill separate
 #' @importFrom rvest read_html html_table
 
-get_ANZSOC <- function(...) {
+get_ANZSOC <- function() {
   url <- "https://www.abs.gov.au/statistics/classifications/australian-and-new-zealand-standard-offence-classification-anzsoc/2023/ANZSOC%202023%20classification%20structure.xlsx"
   tempfile <- file.path(tempdir(), "temp.xlsx")
   download.file(url, tempfile, mode = "wb")
@@ -617,6 +649,8 @@ get_AHECC <- function(version=c("AHECCv2017", "AHECCv2022")) {
   }}
 
 #' @importFrom haven labelled
+#' @importFrom stats setNames
+#' @importFrom utils download.file
 #' @importFrom dplyr mutate filter case_when coalesce
 #' @importFrom stringr str_remove str_sub
 #' @importFrom tidyr fill
@@ -659,6 +693,7 @@ get_AHECC.v2017 <- function() {
   return(data) }
 
 #' @importFrom haven labelled
+#' @importFrom stats setNames
 #' @importFrom dplyr mutate filter case_when left_join select
 #' @importFrom stringr str_remove str_sub str_detect
 #' @importFrom tidyr fill drop_na
@@ -699,6 +734,8 @@ read_ahecc_sheet <- function(path, sheet) {
   return(data) }
 
 #' @importFrom haven labelled
+#' @importFrom stats setNames
+#' @importFrom utils download.file unzip
 #' @importFrom dplyr mutate filter case_when coalesce
 #' @importFrom stringr str_remove str_sub
 #' @importFrom tidyr fill

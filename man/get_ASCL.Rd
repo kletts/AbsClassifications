@@ -4,7 +4,7 @@
 \alias{get_ASCL}
 \title{Get ASCL}
 \usage{
-get_ASCL(...)
+get_ASCL()
 }
 \value{
 A data.frame with the classification hierarchy as labeled vectors

@@ -8,7 +8,7 @@
 #' @returns An option of class `data.tree`
 #' @export
 #' @importFrom dplyr mutate across all_of
-#' @importFrom rlang syms
+#' @importFrom rlang syms .data
 #' @importFrom labelled to_character
 #' @importFrom data.tree as.Node
 

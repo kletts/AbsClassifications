@@ -4,7 +4,7 @@
 \alias{get_SACC}
 \title{Get SACC}
 \usage{
-get_SACC(...)
+get_SACC()
 }
 \value{
 A data.frame with the classification hierarchy as labeled vectors

@@ -4,7 +4,7 @@
 \alias{get_ASCDOC}
 \title{Get ASCDOC}
 \usage{
-get_ASCDOC(...)
+get_ASCDOC()
 }
 \value{
 A data.frame with the classification hierarchy as labeled vectors

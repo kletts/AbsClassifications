@@ -4,7 +4,7 @@
 \alias{get_ANZSOC}
 \title{Get ANZSOC}
 \usage{
-get_ANZSOC(...)
+get_ANZSOC()
 }
 \value{
 A data.frame with the classification hierarchy as labeled vectors

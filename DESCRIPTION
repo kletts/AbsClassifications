@@ -11,9 +11,20 @@ Authors@R: c(
   )
 Description: Gets (ie downloads) Australian Bureau of Statistics Classification Structures 
   and returns them in a standardised labelled vector data frame. 
-License: What license is it under?
+License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: true
 RoxygenNote: 7.3.2
 Roxygen: list(markdown = TRUE)
 Depends: R (>= 4.1.0)
+Imports: 
+    data.tree,
+    dplyr,
+    haven,
+    labelled,
+    purrr,
+    readxl,
+    rlang,
+    rvest,
+    stringr,
+    tidyr

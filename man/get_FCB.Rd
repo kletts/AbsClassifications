@@ -4,7 +4,7 @@
 \alias{get_FCB}
 \title{Get FCB}
 \usage{
-get_FCB(...)
+get_FCB()
 }
 \value{
 A data.frame with the classification hierarchy as labeled vectors
