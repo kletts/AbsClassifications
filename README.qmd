@@ -45,6 +45,8 @@ tibble::tribble(
                                                                                 "2001-08-22", "ASCEDvField", "get_ASCED",
   "ASCED",  "Australian Standard Classification of Education: Level of Education",
                                                                                 "2001-08-22", "ASCEDvLevel", "get_ASCED",
+  "AHECC",  "Australian Harmonized Export Commodity Classification",            "2021-12-03", "AHECCv2017", "get_AHECC", 
+   "AHECC",  "Australian Harmonized Export Commodity Classification",           "2022-01-22", "AHECCv2022", "get_AHECC"
 ) |> 
   dplyr::mutate(ReleaseDate = format(as.Date(ReleaseDate), "%b %Y")) |> 
   knitr::kable(format = "pipe") 

@@ -600,3 +600,123 @@ get_ANZSOC <- function(...) {
       .keep = "none")
   return(data) }
 
+#' Get AHECC
+#' @description Downloads the Australian Harmonized Export Commodity Classifcation version 2017, finalised January 2021
+#' @returns A data.frame with the classification hierarchy as labeled vectors
+#' @export
+
+get_AHECC <- function(version=c("AHECCv2017", "AHECCv2022")) {
+  version <- match.arg(version)
+  if (version=="AHECCv2017") {
+    get_AHECC.v2017()
+  } else {
+    get_AHECC.v2022()
+  }}
+
+#' @importFrom haven labelled
+#' @importFrom dplyr mutate filter case_when coalesce
+#' @importFrom stringr str_remove str_sub
+#' @importFrom tidyr fill
+#' @importFrom readxl read_xls
+#' @noRd
+get_AHECC.v2017 <- function() {
+  url <- "https://www.abs.gov.au/statistics/classifications/australian-harmonized-export-commodity-classification-ahecc/jan-2017/1233024.xls"
+  tempfile <- file.path(tempdir(), "temp.xls")
+  download.file(url, tempfile, mode = "wb")
+  data <- readxl::read_xls(path=tempfile,
+                           sheet="Complete File",
+                           col_types = "text",
+                           col_names = paste0("X", 1:15),
+                           range="A7:O13666")
+  data <- data |>
+    mutate(Level = nchar(str_remove(X1, "AHECC_")),
+           Level = case_when(Level == 6 ~ 1,
+                             Level == 8 ~ 2,
+                             Level == 9 ~ 3,
+                             Level == 10 ~ 4,
+                             Level == 11 ~ 5,
+                             Level == 12 ~ 6,
+                             TRUE ~ NA)) |>
+    mutate(X9 = str_remove(X9, "^\\-{1,}\\s"),
+           X7 = str_remove(X7, "^\\-{1,}\\s")) |>
+    fill(X2, X3, X4, X5, X6, X7, X8, X9, .direction="down") |>
+    mutate(X9 = ifelse(str_sub(X8, 1, 5)==X6, paste(X7, X9), X9))
+  data <- data |>
+    filter(Level==6) |>
+    mutate(
+      AHECC_l1=labelled(X2,
+                        with(subset(data, Level==1), setNames(X2, X3))),
+      AHECC_l2=labelled(X4,
+                        with(subset(data, Level==2), setNames(X4, X5))),
+      AHECC_l3=labelled(X8,
+                        with(subset(data, Level==4), setNames(X8, X9))),
+      AHECC_l4=labelled(X12,
+                        setNames(X12, X15)),
+      .keep = "none")
+  return(data) }
+
+#' @importFrom haven labelled
+#' @importFrom dplyr mutate filter case_when left_join select
+#' @importFrom stringr str_remove str_sub str_detect
+#' @importFrom tidyr fill drop_na
+#' @importFrom readxl read_xlsx
+#' @noRd
+read_ahecc_sheet <- function(path, sheet) {
+  data <- readxl::read_xlsx(path=path,
+                            sheet=sheet,
+                            col_types = "text",
+                            skip = 5) |>
+    mutate(Level = case_when(
+      str_detect(Chapter, "^\\d{2}$") ~ 1,
+      str_detect(Heading, "^\\d{4}$") ~ 2,
+      nchar(`HS Code`)==5 ~ 3,
+      nchar(`HS Code`)>5 ~ 4,
+      TRUE ~ NA)) |>
+    drop_na(Level) |>
+    mutate(HS5 = ifelse(Level==3, `HS Code`, NA),
+           Description = str_remove(Description, "^\\-{1,}\\s")) |>
+    fill(Chapter, Heading, HS5, .direction="down") |>
+    mutate(HS5 = ifelse(Level == 4 & str_sub(`HS Code`, 1, 5) != HS5, NA, HS5))
+  data <- data |>
+    filter(Level==4) |>
+    left_join(data |> filter(Level==3) |> select(HS5, HS5D=Description),
+              by="HS5") |>
+    mutate(Description= ifelse(is.na(HS5), Description, paste(HS5D, Description)),
+           Description = str_remove(Description, "\\:$")) |>
+    mutate(
+      AHECC_l1=labelled(Chapter,
+                        with(subset(data, Level==1),
+                             setNames(Chapter, str_remove(Description, "\\:$")))),
+      AHECC_l2=labelled(Heading,
+                        with(subset(data, Level==2),
+                             setNames(Heading, str_remove(Description, "\\:$")))),
+      AHECC_l3=labelled(`HS Code`,
+                        setNames(`HS Code`, Description)),
+      .keep = "none")
+  return(data) }
+
+#' @importFrom haven labelled
+#' @importFrom dplyr mutate filter case_when coalesce
+#' @importFrom stringr str_remove str_sub
+#' @importFrom tidyr fill
+#' @importFrom purrr map_dfr
+#' @importFrom readxl read_xlsx excel_sheets
+#' @noRd
+
+get_AHECC.v2022 <- function() {
+  url <- "https://www.abs.gov.au/statistics/classifications/australian-harmonized-export-commodity-classification-ahecc/2022/CompleteAHECC.zip"
+  tempfile <- file.path(tempdir(), "temp.zip")
+  download.file(url, tempfile, mode = "wb")
+  files <- unzip(tempfile, list=TRUE)
+  unzip(tempfile, exdir=tempdir())
+  data <- map_dfr(files$Name, \(f) {
+    sheets <- excel_sheets(file.path(tempdir(), f))
+    sheets <- sheets[grepl("^Chapter \\d+\\b(?!\\s*notes)", sheets, perl = TRUE)]
+    if (length(sheets)>0) {
+      map_dfr(sheets, \(s) read_ahecc_sheet(file.path(tempdir(), f), s))
+    } else {
+      NULL
+    }})
+  unlink(file.path(tempdir(), files))
+  return(data) }
+

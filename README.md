@@ -37,6 +37,8 @@ The available structures, versions, and download functions are:
 | CPICC  | Consumer Price Index Commodity Classification: 15th series                             | Jul 2011    | CPICCv15    | get_CPICC  |
 | ASCED  | Australian Standard Classification of Education: Field of Education                    | Aug 2001    | ASCEDvField | get_ASCED  |
 | ASCED  | Australian Standard Classification of Education: Level of Education                    | Aug 2001    | ASCEDvLevel | get_ASCED  |
+| AHECC  | Australian Harmonized Export Commodity Classification                                  | Dec 2021    | AHECCv2017  | get_AHECC  |
+| AHECC  | Australian Harmonized Export Commodity Classification                                  | Jan 2022    | AHECCv2022  | get_AHECC  |
 
 Where multiple versions or substructures are available, specify the
 version required, when calling the function, for example:
