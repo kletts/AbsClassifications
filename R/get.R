@@ -601,7 +601,10 @@ get_ANZSOC <- function(...) {
   return(data) }
 
 #' Get AHECC
-#' @description Downloads the Australian Harmonized Export Commodity Classifcation version 2017, finalised January 2021
+#' @description Downloads the Australian Harmonized Export Commodity Classifcation
+#' @param version character string, one of:
+#'  - AHECCv2017, version 2017, finalised January 2021
+#'  - AHECCv2022, version 2022, finalised January 2022
 #' @returns A data.frame with the classification hierarchy as labeled vectors
 #' @export
 
@@ -708,7 +711,7 @@ get_AHECC.v2022 <- function() {
   tempfile <- file.path(tempdir(), "temp.zip")
   download.file(url, tempfile, mode = "wb")
   files <- unzip(tempfile, list=TRUE)
-  unzip(tempfile, exdir=tempdir())
+  unzip(tempfile, exdir=tempdir(), overwrite=TRUE)
   data <- map_dfr(files$Name, \(f) {
     sheets <- excel_sheets(file.path(tempdir(), f))
     sheets <- sheets[grepl("^Chapter \\d+\\b(?!\\s*notes)", sheets, perl = TRUE)]
@@ -717,6 +720,6 @@ get_AHECC.v2022 <- function() {
     } else {
       NULL
     }})
-  unlink(file.path(tempdir(), files))
+  unlink(file.path(tempdir(), files$Name))
   return(data) }
 
