@@ -5,6 +5,9 @@
 #' @param type character, one of
 #'  - `code` a data tree with levelNames based on hierarchy codes
 #'  - `desc` a data tree with levelNames based on hierarchy code descriptions
+#'  - `comb` a data tree with levelNames that combines the code and its description
+#'  @param sep character, a separate to use when combining the code and its description as the level name, default is a colon and
+#'  space `: `
 #' @returns An option of class `data.tree`
 #' @export
 #' @importFrom dplyr mutate across all_of
@@ -13,7 +16,8 @@
 #' @importFrom data.tree as.Node
 
 as_datatree <- function(structure,
-                        type=c("code", "desc")) {
+                        type=c("code", "desc", "comb"),
+                        sep=": ") {
   type <- match.arg(type)
   sn <- colnames(structure)
   sn <- sn[grep("\\_l\\d{1}$", sn)]
@@ -21,6 +25,13 @@ as_datatree <- function(structure,
     tree <- structure |>
       mutate(pathString = paste("Root", !!!syms(sn), sep="//"),
              desc = labelled::to_character(.data[[sn[length(sn)]]])) |>
+      data.tree::as.Node(pathDelimiter = "//")
+  } else if (type=="comb") {
+    stopifnot("sep can not be //"=(sep!="//"))
+    tree <- structure |>
+      mutate(across(all_of(sn),
+                    \(x) paste(x, labelled::to_character(x), sep=sep)),
+             pathString = paste("Root", !!!syms(sn), sep="//")) |>
       data.tree::as.Node(pathDelimiter = "//")
   } else {
     tree <- structure |>
