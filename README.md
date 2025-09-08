@@ -53,30 +53,31 @@ The available structures, versions, and download functions are:
 You can directly download any of the the classifications from this
 repository using the following URL:
 
-`https://raw.githubusercontent.com/kletts/AbsClassifications/data/XXXX.parquet`
+`https://github.com/kletts/AbsClassifications/raw/refs/heads/main/extdata/XXXX.parquet`
 
 where `XXXX` refers to the file name for the classification as provided
 in the table above. For example, using the `arrow::read_parquet`
 function in R:
 
 ``` r
-url <- "https://raw.githubusercontent.com/kletts/AbsClassifications/extdata/FCB.parquet"
+library(haven)
+url <- "https://github.com/kletts/AbsClassifications/raw/refs/heads/main/extdata/FCB.parquet"
 arrow::read_parquet(url)
 ```
 
 Parquet files are preferred because:
 
 - the storage size is much smaller than other formats such as CSV,
-  especially on the larger classifications more repition of the codes
+  especially on the larger classifications more repitition of the codes
   and description on the top level;
 - the file preserves the labelled vector format of the hierarchy, it
   imports both the codes and descriptions as a `tibble::tibble` format
-  table;
+  table if the haven package has been loaded before download;
 - the parquet format is easily read in almost all major programming
   languages including javascript (see `npm:apache-arrow`), python (eg
   see `pandas.read_parquet`) or SQL (eg see `DuckDB.read_parquet`).
 
-Note that the R `nanoparquet::read_parquet` function does not currently
+Note the R `nanoparquet::read_parquet` function does not currently
 support labelled vectors.
 
 ## Using functions
