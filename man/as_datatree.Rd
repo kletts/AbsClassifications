@@ -4,7 +4,7 @@
 \alias{as_datatree}
 \title{As Data Tree}
 \usage{
-as_datatree(structure, type = c("code", "desc"))
+as_datatree(structure, type = c("code", "desc", "comb"), sep = ": ")
 }
 \arguments{
 \item{structure}{A data.frame with labelled}
@@ -13,7 +13,11 @@ as_datatree(structure, type = c("code", "desc"))
 \itemize{
 \item \code{code} a data tree with levelNames based on hierarchy codes
 \item \code{desc} a data tree with levelNames based on hierarchy code descriptions
+\item \code{comb} a data tree with levelNames that combines the code and its description
 }}
+
+\item{sep}{character, a separate to use when combining the code and its description as the level name, default is a colon and
+space \verb{: }}
 }
 \value{
 An option of class \code{data.tree}

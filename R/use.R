@@ -6,7 +6,7 @@
 #'  - `code` a data tree with levelNames based on hierarchy codes
 #'  - `desc` a data tree with levelNames based on hierarchy code descriptions
 #'  - `comb` a data tree with levelNames that combines the code and its description
-#'  @param sep character, a separate to use when combining the code and its description as the level name, default is a colon and
+#' @param sep character, a separate to use when combining the code and its description as the level name, default is a colon and
 #'  space `: `
 #' @returns An option of class `data.tree`
 #' @export

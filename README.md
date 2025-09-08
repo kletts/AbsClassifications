@@ -1,5 +1,11 @@
 # AbsClassifications
 
+<!-- badges: start -->
+
+[![CRAN
+status](https://www.r-pkg.org/badges/version/AbsClassifications.png)](https://CRAN.R-project.org/package=AbsClassifications)
+<!-- badges: end -->
+
 Install package from github as:
 
 ``` r
@@ -15,30 +21,65 @@ standard format.
 
 The available structures, versions, and download functions are:
 
-| Abbrev | Name                                                                                   | ReleaseDate | Version     | Function   |
-|:-------|:---------------------------------------------------------------------------------------|:------------|:------------|:-----------|
-| OSCA   | Occupation Standard Classification for Australia                                       | Dec 2024    |             | get_OSCA   |
-| ANZSCO | Australian and New Zealand Standard Classification of Occupation                       | Nov 2022    | ANZSCOv2022 | get_ANZSCO |
-| ANZSCO | Australian and New Zealand Standard Classification of Occupation                       | Nov 2021    | ANZSCOv2021 | get_ANZSCO |
-| ANZSIC | Australian and New Zealand Standard Industrial Classification                          | Jun 2013    |             | get_ANZSIC |
-| ASCL   | Australian Standard Classification of Languages                                        | Mar 2025    |             | get_ASCL   |
-| ASCRG  | Australian Standard Classification of Religious Groups                                 | Mar 2024    | ASCRGv2024  | get_ASCRG  |
-| ASCRG  | Australian Standard Classification of Religious Groups                                 | Jul 2016    | ASCRGv2016  | get_ASCRG  |
-| ANZSOC | Australian and New Zealand Standard Offence Classification                             | Nov 2023    |             | get_ANZSOC |
-| SESCA  | Standard Economic Sector Classifications of Australia                                  | Dec 2021    | SISCAv2021  | get_SESCA  |
-| SESCA  | Standard Economic Sector Classifications of Australia                                  | Mar 2008    | SISCAv2008  | get_SESCA  |
-| FCB    | Functional Classification of Buildings                                                 | Jan 2021    |             | get_FCB    |
-| ANZSRC | Australian and New Zealand Standard Research Classification: Field of Research         | Jun 2020    | ANZSRCvFoR  | get_ANZSRC |
-| ANZSRC | Australian and New Zealand Standard Research Classification: Socio-Economic Objectives | Jun 2020    | ANZSRCvSEO  | get_ANZSRC |
-| ASCCEG | Australian Standard Classification of Cultural and Ethnic Groups                       | Dec 2019    |             | get_ASCCEG |
-| SACC   | Standard Australian Classification of Countries                                        | Jun 2016    |             | get_SACC   |
-| ASCDOC | Australian Standard Classification of Drugs of Concern                                 | Jul 2011    |             | get_ASCDOC |
-| CPICC  | Consumer Price Index Commodity Classification: 16th series                             | Jul 2011    | CPICCv16    | get_CPICC  |
-| CPICC  | Consumer Price Index Commodity Classification: 15th series                             | Jul 2011    | CPICCv15    | get_CPICC  |
-| ASCED  | Australian Standard Classification of Education: Field of Education                    | Aug 2001    | ASCEDvField | get_ASCED  |
-| ASCED  | Australian Standard Classification of Education: Level of Education                    | Aug 2001    | ASCEDvLevel | get_ASCED  |
-| AHECC  | Australian Harmonized Export Commodity Classification                                  | Dec 2021    | AHECCv2017  | get_AHECC  |
-| AHECC  | Australian Harmonized Export Commodity Classification                                  | Jan 2022    | AHECCv2022  | get_AHECC  |
+| Abbrev | Name                                                                                   | ReleaseDate | Version     | Function   | FileName            |
+|:-------|:---------------------------------------------------------------------------------------|:------------|:------------|:-----------|:--------------------|
+| OSCA   | Occupation Standard Classification for Australia                                       | Dec 2024    |             | get_OSCA   | OSCA.parquet        |
+| ANZSCO | Australian and New Zealand Standard Classification of Occupation                       | Nov 2022    | ANZSCOv2022 | get_ANZSCO | ANZSCOv2022.parquet |
+| ANZSCO | Australian and New Zealand Standard Classification of Occupation                       | Nov 2021    | ANZSCOv2021 | get_ANZSCO | ANZSCOv2021.parquet |
+| ANZSIC | Australian and New Zealand Standard Industrial Classification                          | Jun 2013    |             | get_ANZSIC | ANZSIC.parquet      |
+| ASCL   | Australian Standard Classification of Languages                                        | Mar 2025    |             | get_ASCL   | ASCL.parquet        |
+| ASCRG  | Australian Standard Classification of Religious Groups                                 | Mar 2024    | ASCRGv2024  | get_ASCRG  | ASCRGv2024.parquet  |
+| ASCRG  | Australian Standard Classification of Religious Groups                                 | Jul 2016    | ASCRGv2016  | get_ASCRG  | ASCRGv2016.parquet  |
+| ANZSOC | Australian and New Zealand Standard Offence Classification                             | Nov 2023    |             | get_ANZSOC | ANZSOC.parquet      |
+| SESCA  | Standard Economic Sector Classifications of Australia                                  | Dec 2021    | SISCAv2021  | get_SESCA  | SISCAv2021.parquet  |
+| SESCA  | Standard Economic Sector Classifications of Australia                                  | Mar 2008    | SISCAv2008  | get_SESCA  | SISCAv2008.parquet  |
+| FCB    | Functional Classification of Buildings                                                 | Jan 2021    |             | get_FCB    | FCB.parquet         |
+| ANZSRC | Australian and New Zealand Standard Research Classification: Field of Research         | Jun 2020    | ANZSRCvFoR  | get_ANZSRC | ANZSRCvFoR.parquet  |
+| ANZSRC | Australian and New Zealand Standard Research Classification: Socio-Economic Objectives | Jun 2020    | ANZSRCvSEO  | get_ANZSRC | ANZSRCvSEO.parquet  |
+| ASCCEG | Australian Standard Classification of Cultural and Ethnic Groups                       | Dec 2019    |             | get_ASCCEG | ASCCEG.parquet      |
+| SACC   | Standard Australian Classification of Countries                                        | Jun 2016    |             | get_SACC   | SACC.parquet        |
+| ASCDOC | Australian Standard Classification of Drugs of Concern                                 | Jul 2011    |             | get_ASCDOC | ASCDOC.parquet      |
+| CPICC  | Consumer Price Index Commodity Classification: 16th series                             | Jul 2011    | CPICCv16    | get_CPICC  | CPICCv16.parquet    |
+| CPICC  | Consumer Price Index Commodity Classification: 15th series                             | Jul 2011    | CPICCv15    | get_CPICC  | CPICCv15.parquet    |
+| ASCED  | Australian Standard Classification of Education: Field of Education                    | Aug 2001    | ASCEDvField | get_ASCED  | ASCEDvField.parquet |
+| ASCED  | Australian Standard Classification of Education: Level of Education                    | Aug 2001    | ASCEDvLevel | get_ASCED  | ASCEDvLevel.parquet |
+| AHECC  | Australian Harmonized Export Commodity Classification                                  | Dec 2021    | AHECCv2017  | get_AHECC  | AHECCv2017.parquet  |
+| AHECC  | Australian Harmonized Export Commodity Classification                                  | Jan 2022    | AHECCv2022  | get_AHECC  | AHECCv2022.parquet  |
+| COICOP | United Nation’s Classification of Individual Consumption According to Purpose          | Mar 2018    | COICOPv2018 | get_COICOP | COICOPv2018.parquet |
+| COICOP | United Nation’s Classification of Individual Consumption According to Purpose          | Mar 1999    | COICOPv1999 | get_COICOP | COICOPv1999.parquet |
+
+## Direct download
+
+You can directly download any of the the classifications from this
+repository using the following URL:
+
+`https://raw.githubusercontent.com/kletts/AbsClassifications/data/XXXX.parquet`
+
+where `XXXX` refers to the file name for the classification as provided
+in the table above. For example, using the `arrow::read_parquet`
+function in R:
+
+``` r
+url <- "https://raw.githubusercontent.com/kletts/AbsClassifications/extdata/FCB.parquet"
+arrow::read_parquet(url)
+```
+
+Parquet files are preferred because:
+
+- the storage size is much smaller than other formats such as CSV,
+  especially on the larger classifications more repition of the codes
+  and description on the top level;
+- the file preserves the labelled vector format of the hierarchy, it
+  imports both the codes and descriptions as a `tibble::tibble` format
+  table;
+- the parquet format is easily read in almost all major programming
+  languages including javascript (see `npm:apache-arrow`), python (eg
+  see `pandas.read_parquet`) or SQL (eg see `DuckDB.read_parquet`).
+
+Note that the R `nanoparquet::read_parquet` function does not currently
+support labelled vectors.
+
+## Using functions
 
 Where multiple versions or substructures are available, specify the
 version required, when calling the function, for example:
